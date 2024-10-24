@@ -1,5 +1,6 @@
 class PetsController < ApplicationController
   before_action :set_pet, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!, except: [:index, :show]
 
   # GET /pets or /pets.json
   def index
@@ -22,6 +23,8 @@ class PetsController < ApplicationController
   # POST /pets or /pets.json
   def create
     @pet = Pet.new(pet_params)
+    # el dueño de la pet es el usuario que lo creó
+    @pet.user = current_user
 
     respond_to do |format|
       if @pet.save
@@ -65,6 +68,6 @@ class PetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def pet_params
-      params.require(:pet).permit(:name, :race, :age, :gender)
+      params.require(:pet).permit(:name, :race, :age, :gender, images: [])
     end
 end
