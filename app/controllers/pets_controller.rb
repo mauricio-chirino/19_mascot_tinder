@@ -4,6 +4,7 @@ class PetsController < ApplicationController
 
   # GET /pets or /pets.json
   def index
+    puts "\n\n#{ENV['saludo']}\n\n"
     @pets = Pet.all
   end
 
